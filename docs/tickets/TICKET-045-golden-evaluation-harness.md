@@ -32,6 +32,17 @@ Writes metrics to eval_run and eval_result, reproducible from git_sha plus datas
 - [ ] every legitimate exception is classified as VALID_EXCEPTION with zero false leakage cases
 - [ ] metrics are written to eval_run and eval_result and are reproducible
 
+## Verification
+
+**Gate G9 — stop here.** Before starting the next ticket, run
+
+```bash
+make verify
+```
+
+and paste `artifacts/verify-report.md` back. Work does not continue until this
+gate is signed off. See [../verification-protocol.md](../verification-protocol.md).
+
 ## Definition of done
 
 - [ ] every deliverable file exists

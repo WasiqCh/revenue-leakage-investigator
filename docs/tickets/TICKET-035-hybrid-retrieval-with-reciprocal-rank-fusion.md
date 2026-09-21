@@ -28,6 +28,17 @@ pgvector semantic search plus Postgres full-text search, combined with reciproca
 - [ ] both the lexical-only and semantic-only paths are exercised by tests
 - [ ] RRF ordering is deterministic
 
+## Verification
+
+**Gate G7 — stop here.** Before starting the next ticket, run
+
+```bash
+make verify
+```
+
+and paste `artifacts/verify-report.md` back. Work does not continue until this
+gate is signed off. See [../verification-protocol.md](../verification-protocol.md).
+
 ## Definition of done
 
 - [ ] every deliverable file exists

@@ -29,6 +29,17 @@ Uses interval algebra and daily_rate = period_amount / period_days. Over-billing
 - [ ] a billed-early case returns a negative (over-billing) delta
 - [ ] a synthetic duplicate-coverage case is detected with the correct summed amount
 
+## Verification
+
+**Gate G4 — stop here.** Before starting the next ticket, run
+
+```bash
+make verify
+```
+
+and paste `artifacts/verify-report.md` back. Work does not continue until this
+gate is signed off. See [../verification-protocol.md](../verification-protocol.md).
+
 ## Definition of done
 
 - [ ] every deliverable file exists
