@@ -1,0 +1,41 @@
+# Minimal scaffold. TICKET-001 owns the final version of this file.
+[project]
+name = "revenue-leakage-investigator"
+version = "0.1.0"
+description = "AI-assisted revenue assurance and leakage investigation for B2B SaaS"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "sqlalchemy>=2.0",
+    "alembic",
+    "psycopg[binary]",
+    "pgvector",
+    "pydantic>=2.0",
+    "pydantic-settings",
+    "httpx",
+    "python-dateutil",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "hypothesis",
+    "ruff",
+    "mypy",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+# Tests must never touch the network. See AGENTS.md section 1.5.
+env = ["LLM_MOCK=1", "CUAD_OFFLINE=1"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.mypy]
+python_version = "3.13"
+strict = true

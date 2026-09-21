@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+.next/
+out/
+build/
+*.tsbuildinfo
+npm-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Secrets
+*.pem
+*.key
+secrets/
+credentials.json
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+postgres_data/
+
+# CUAD dataset cache — NEVER commit third-party contract text.
+# See THIRD_PARTY_NOTICES.md and docs/adr/ADR-007-cuad-real-data.md
+data/cuad/
+*.cuad.json
+cuad_cache/
+
+# Generated artifacts
+artifacts/
+reports/
+dist/
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
