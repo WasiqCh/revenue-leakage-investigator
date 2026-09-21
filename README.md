@@ -155,7 +155,7 @@ ready-made answer key to score clause extraction.
 > **We do not train any model.** We download text, split it into clauses, convert
 > each clause into a vector using an existing embedding model, and search it later.
 > That is retrieval, not training. See
-> [docs/adr/ADR-007-cuad-real-data.md](docs/adr/ADR-007-cuad-real-data.md).
+> [docs/adr/ADR-007-cuad-real-data-non-redistribution.md](docs/adr/ADR-007-cuad-real-data-non-redistribution.md).
 >
 > CUAD contract text is **cached outside the repo and never committed**, because
 > the dataset's licence is not clearly published. Synthetic customer names are
