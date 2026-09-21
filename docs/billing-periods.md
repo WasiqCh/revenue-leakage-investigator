@@ -196,7 +196,6 @@ is reproducible from its settings.
 | Partial month before `FIRST_FULL_PERIOD` | Stub with zero charge. Never a leakage finding |
 | `NEXT_PERIOD_START` with a partial interval | Partial interval is billed as a prorated stub |
 | Mid-period seat change | Period split at the change date; each sub-interval prorated at its own quantity, then summed |
-| Annual prepay covering a mid-term change | Same ACT/ACT rule applied over the longer period |
 | Invoice covers days *before* the expected start | `OVERBILLING` finding, negative amount, separate case |
 | Two invoice lines cover the same day | Double-coverage finding, amounts summed across overlaps |
 | Delta exactly at tolerance | **Pass** — the comparison is strictly greater-than |

@@ -133,7 +133,7 @@ adjusted once scored, or the score stops meaning anything.
 
 Fields extracted include governing law, renewal term, notice period, auto-renew,
 payment terms, price uplift cap, termination for convenience, exclusivity, most
-favoured nation, minimum commitment, audit rights, and cap on liability.
+favoured nation, minimum commitment, audit rights and cap on liability.
 
 **Correctness rule.** For text-valued fields, an answer counts as correct if it is
 a **normalised exact match** (case-folded, whitespace collapsed, punctuation
