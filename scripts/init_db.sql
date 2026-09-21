@@ -6,7 +6,7 @@
 --   2. Create a read-only database user. This is a real safety gate, not a
 --      promise: the AI agent connects as rl_readonly, so it is literally
 --      impossible for the agent to change an invoice, contract or price even
---      if it is tricked into trying. See docs/adr/ADR-004-read-only-guardrail.md
+--      if it is tricked into trying. See docs/adr/ADR-004-read-only-role-guardrail.md
 -- ---------------------------------------------------------------------------
 
 CREATE EXTENSION IF NOT EXISTS vector;

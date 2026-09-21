@@ -195,7 +195,6 @@ is reproducible from its settings.
 | Anchor day 29, non-leap February | Clamps to Feb 28; next period resumes on the 29th |
 | Partial month before `FIRST_FULL_PERIOD` | Stub with zero charge. Never a leakage finding |
 | `NEXT_PERIOD_START` with a partial interval | Partial interval is billed as a prorated stub |
-| `IMMEDIATE` with a mid-month start | First period is prorated ACT/ACT, no stub |
 | Mid-period seat change | Period split at the change date; each sub-interval prorated at its own quantity, then summed |
 | Annual prepay covering a mid-term change | Same ACT/ACT rule applied over the longer period |
 | Invoice covers days *before* the expected start | `OVERBILLING` finding, negative amount, separate case |

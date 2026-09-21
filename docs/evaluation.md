@@ -87,8 +87,7 @@ These are the thresholds asserted in CI. `make eval` fails if any is missed.
 Two notes on the numbers. First, the README quotes rounder public figures (≥ 90%
 found, ≥ 80% precision); the asserted CI thresholds above are the stricter ones
 the harness actually enforces. Second, **money accuracy is not a percentage to
-tune** — it is 100% or the build is broken. Rounding drift in money is a bug, not
-a score.
+tune** — it is 100% or the build is broken.
 
 ## RAG metrics
 
