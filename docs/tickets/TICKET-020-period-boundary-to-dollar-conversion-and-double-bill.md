@@ -1,4 +1,4 @@
-# TICKET-019 - Period-boundary to dollar conversion and double-billing
+# TICKET-020 - Period-boundary to dollar conversion and double-billing
 
 - **Status:** TODO
 - **Phase:** 3 - Deterministic core

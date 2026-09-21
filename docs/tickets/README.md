@@ -1,8 +1,12 @@
 # Implementation tickets
 
-**48 tickets.** Each one is a self-contained unit of work with its own file.
+**52 tickets.** Each one is a self-contained unit of work with its own file.
 Work them in numeric order — dependencies are already ordered, so a ticket only
 ever depends on earlier ones.
+
+> Building the interface? Read [`../ux-ui-plan.md`](../ux-ui-plan.md) first. It
+> defines the visual language, the exact wording for every label, and the layout
+> for each screen. TICKET-041 through 044, 051 and 052 implement it.
 
 ---
 
@@ -53,15 +57,15 @@ The `Co-authored-by:` line is **required on every commit**.
 |---|---|---|---|
 | 0 | 001–004 | Foundation — repo, Docker, settings, database plumbing | 2.5 d |
 | 1 | 005–008 | Schema — source tables, derived tables, guardrails, money types | 4.5 d |
-| 2 | 009–012 | Data generation — scenario recipes, generators, golden labels | 5.0 d |
-| 3 | 013–021 | Deterministic core — periods, proration, detectors, entity resolution | 12.5 d |
+| 2 | 009–012, 049 | Data generation — scenario recipes, generators, golden labels, ingestion | 6.5 d |
+| 3 | 013–021, 050 | Deterministic core — periods, proration, detectors, entity resolution, anomaly | 14.0 d |
 | 4 | 022–026 | Cases and money — dedup, state machine, leakage maths, confidence | 6.0 d |
 | 5 | 027–032 | AI layer — provider, tools, agent loop, verifier, jobs | 10.0 d |
 | 6 | 033–036 | RAG and real data — CUAD, chunking, retrieval, clause extraction | 6.0 d |
 | 7 | 037–040 | API — FastAPI, cases, decisions, ops, constrained Q&A | 5.5 d |
-| 8 | 041–044 | Frontend — scaffold, case queue, case detail, supporting views | 6.5 d |
+| 8 | 041–044, 051, 052 | Frontend — scaffold, queue, detail, dashboard, risk view, supporting views | 10.0 d |
 | 9 | 045–048 | Evaluation — golden harness, e2e, optional baseline, docs | 6.5 d |
-| | | **Total** | **~65 d** |
+| | | **Total** | **~71.5 d** |
 
 These are deliberately conservative solo estimates. They are a planning aid, not a
 promise. Several tickets are small for an experienced implementer.
@@ -118,17 +122,19 @@ measurement only. Skipping it breaks nothing.
 - [TICKET-010](TICKET-010-customer-contract-and-subscription-generator.md) — Customer, contract and subscription generator
 - [TICKET-011](TICKET-011-usage-invoice-and-billing-generators-with-injected-d.md) — Usage, invoice and billing generators with injected drift
 - [TICKET-012](TICKET-012-ground-truth-manifests-golden-labels-and-seed-comman.md) — Ground-truth manifests, golden labels and seed command
+- [TICKET-049](TICKET-049-ingestion-layer.md) — Ingestion layer
 
 ### Phase 3 — Deterministic core
 - [TICKET-013](TICKET-013-billing-period-engine.md) — Billing period engine
 - [TICKET-014](TICKET-014-proration-engine.md) — Proration engine
 - [TICKET-015](TICKET-015-expected-revenue-engine.md) — Expected revenue engine
 - [TICKET-016](TICKET-016-detector-framework-and-idempotent-persistence.md) — Detector framework and idempotent persistence
-- [TICKET-017](TICKET-017-detectors-batch-1.md) — Detectors batch 1
-- [TICKET-018](TICKET-018-detectors-batch-2.md) — Detectors batch 2
-- [TICKET-019](TICKET-019-period-boundary-to-dollar-conversion-and-double-bill.md) — Period-boundary to dollar conversion and double-billing
-- [TICKET-020](TICKET-020-entity-resolution.md) — Entity resolution
+- [TICKET-017](TICKET-017-entity-resolution.md) — Entity resolution
+- [TICKET-018](TICKET-018-detectors-batch-1.md) — Detectors batch 1
+- [TICKET-019](TICKET-019-detectors-batch-2.md) — Detectors batch 2
+- [TICKET-020](TICKET-020-period-boundary-to-dollar-conversion-and-double-bill.md) — Period-boundary to dollar conversion and double-billing
 - [TICKET-021](TICKET-021-change-event-generation-what-changed.md) — Change event generation (what changed)
+- [TICKET-050](TICKET-050-anomaly-detectors.md) — Anomaly detectors
 
 ### Phase 4 — Cases and money
 - [TICKET-022](TICKET-022-case-fingerprinting-and-idempotent-upsert.md) — Case fingerprinting and idempotent upsert
@@ -162,6 +168,8 @@ measurement only. Skipping it breaks nothing.
 - [TICKET-042](TICKET-042-case-queue-ui.md) — Case queue UI
 - [TICKET-043](TICKET-043-case-detail-ui.md) — Case detail UI
 - [TICKET-044](TICKET-044-change-timeline-recovered-revenue-ledger-and-time-to.md) — Change timeline, recovered-revenue ledger and time-to-detect simulator
+- [TICKET-051](TICKET-051-overview-dashboard-and-analytics.md) — Overview dashboard and analytics
+- [TICKET-052](TICKET-052-customer-risk-view-and-integrity-score.md) — Customer risk view and Revenue Integrity Score
 
 ### Phase 9 — Evaluation
 - [TICKET-045](TICKET-045-golden-evaluation-harness.md) — Golden evaluation harness

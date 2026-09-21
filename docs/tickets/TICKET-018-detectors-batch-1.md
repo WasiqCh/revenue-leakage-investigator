@@ -1,4 +1,4 @@
-# TICKET-017 - Detectors batch 1
+# TICKET-018 - Detectors batch 1
 
 - **Status:** TODO
 - **Phase:** 3 - Deterministic core

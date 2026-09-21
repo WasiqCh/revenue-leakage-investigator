@@ -2,8 +2,8 @@
 
 > **Status: design complete, code not yet written.**
 > This repository currently contains the product and technical specification,
-> the architecture, and 48 implementation tickets. The application code is built
-> from those tickets. See [docs/tickets/README.md](docs/tickets/README.md).
+> the architecture, the UI/UX plan, and 52 implementation tickets. The application
+> code is built from those tickets. See [docs/tickets/README.md](docs/tickets/README.md).
 
 ---
 
@@ -182,6 +182,7 @@ ready-made answer key to score clause extraction.
 │  ├─ case-lifecycle.md   the state machine
 │  ├─ evaluation.md       how we prove it works
 │  ├─ glossary.md         plain-English dictionary of every technical term
+│  ├─ ux-ui-plan.md       how the product looks and reads — read before UI tickets
 │  ├─ demo-script.md      click-by-click script for the demo video
 │  ├─ adr/                one file per significant decision
 │  └─ tickets/            one file per unit of work (48 total)

@@ -1,9 +1,9 @@
-# TICKET-018 - Detectors batch 2
+# TICKET-019 - Detectors batch 2
 
 - **Status:** TODO
 - **Phase:** 3 - Deterministic core
 - **Effort:** 2.5 days
-- **Depends on:** TICKET-016
+- **Depends on:** TICKET-016, TICKET-017
 
 ## Goal
 

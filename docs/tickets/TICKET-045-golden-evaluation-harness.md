@@ -3,7 +3,7 @@
 - **Status:** TODO
 - **Phase:** 9 - Evaluation
 - **Effort:** 2.0 days
-- **Depends on:** TICKET-018, TICKET-025, TICKET-026
+- **Depends on:** TICKET-019, TICKET-025, TICKET-026
 
 ## Goal
 

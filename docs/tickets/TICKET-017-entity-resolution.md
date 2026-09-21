@@ -1,4 +1,4 @@
-# TICKET-020 - Entity resolution
+# TICKET-017 - Entity resolution
 
 - **Status:** TODO
 - **Phase:** 3 - Deterministic core
