@@ -6,7 +6,7 @@
 # ---------------------------------------------------------------------------
 
 .DEFAULT_GOAL := help
-.PHONY: help up down logs db-shell migrate seed reconcile investigate test eval lint fmt fetch-cuad demo
+.PHONY: help up down logs db-shell migrate seed reconcile investigate test eval lint fmt fetch-cuad demo lint-backend lint-frontend fmt-backend fmt-frontend
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}'
@@ -45,12 +45,23 @@ test: ## Run the full test suite (never calls the network)
 eval: ## Run the golden-dataset evaluation and print the scorecard
 	docker compose exec backend python -m app.cli eval --suite all
 
-lint: ## Static checks
+lint: lint-backend lint-frontend ## Static checks (Python and TypeScript)
+
+lint-backend: ## Python static checks
 	docker compose exec backend ruff check .
 	docker compose exec backend mypy app
 
-fmt: ## Auto-format code
+lint-frontend: ## TypeScript static checks
+	docker compose exec frontend npm run lint
+	docker compose exec frontend npm run format:check
+
+fmt: fmt-backend fmt-frontend ## Auto-format code
+
+fmt-backend: ## Auto-format Python
 	docker compose exec backend ruff format .
+
+fmt-frontend: ## Auto-format TypeScript
+	docker compose exec frontend npm run format
 
 demo: ## Seed + reconcile + investigate, ready for a demo video
 	$(MAKE) seed

@@ -1,4 +1,4 @@
-# Minimal scaffold. TICKET-001 owns the final version of this file.
+# TICKET-001 owns this file.
 [project]
 name = "revenue-leakage-investigator"
 version = "0.1.0"
@@ -21,6 +21,7 @@ dependencies = [
 dev = [
     "pytest",
     "pytest-asyncio",
+    "pytest-env",
     "hypothesis",
     "ruff",
     "mypy",
@@ -30,11 +31,22 @@ dev = [
 testpaths = ["tests"]
 addopts = "-q"
 # Tests must never touch the network. See AGENTS.md section 1.5.
+# NOTE: this `env` setting only works because `pytest-env` is installed (it is
+# in the `dev` extra above). Without it pytest silently ignores this key, the
+# variables are never set, and tests can reach the network. There is a test
+# covering this in backend/tests/test_offline_env.py.
 env = ["LLM_MOCK=1", "CUAD_OFFLINE=1"]
 
 [tool.ruff]
 target-version = "py313"
 line-length = 100
+
+[tool.ruff.lint]
+# EXE002 fires when a file has the executable bit but no shebang. On Windows,
+# Docker Desktop's bind mount reports every file as executable, so the rule
+# would flag every source file regardless of its contents. File permission bits
+# are not meaningful in this repository: CI checks out through git.
+ignore = ["EXE002"]
 
 [tool.mypy]
 python_version = "3.13"

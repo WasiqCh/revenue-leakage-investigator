@@ -17,6 +17,7 @@ whether a flagged revenue gap is real, quickly and with confidence.
 The product must look like **serious enterprise finance software**, not an AI demo.
 
 Do:
+
 - clean typography, generous spacing, clear hierarchy
 - subtle borders, professional tables, compact data visualisations
 - status badges, evidence cards, timeline components, side panels
@@ -24,6 +25,7 @@ Do:
   thing is
 
 Do not:
+
 - neon, glowing gradients, or "AI startup landing page" aesthetics
 - a chatbot as the primary interface
 - robot illustrations or generic AI icons
@@ -34,14 +36,14 @@ model showcase.
 
 ## Screens
 
-| Route | Purpose | Ticket |
-|---|---|---|
-| `/` | Overview: totals, trend, high-risk accounts, queue preview | TICKET-042 |
-| `/cases` | Case queue with filters | TICKET-042 |
+| Route         | Purpose                                                                 | Ticket     |
+| ------------- | ----------------------------------------------------------------------- | ---------- |
+| `/`           | Overview: totals, trend, high-risk accounts, queue preview              | TICKET-042 |
+| `/cases`      | Case queue with filters                                                 | TICKET-042 |
 | `/cases/[id]` | **The most important screen** — evidence chain, report, trace, decision | TICKET-043 |
-| `/timeline` | "What changed?" field-level diffs by system | TICKET-044 |
-| `/ledger` | Recovered revenue | TICKET-044 |
-| `/simulator` | Time-to-detect: what faster detection would have saved | TICKET-044 |
+| `/timeline`   | "What changed?" field-level diffs by system                             | TICKET-044 |
+| `/ledger`     | Recovered revenue                                                       | TICKET-044 |
+| `/simulator`  | Time-to-detect: what faster detection would have saved                  | TICKET-044 |
 
 ## Rules
 
