@@ -28,6 +28,26 @@ Composes contract terms, amendments, pricing rules, entitlement quantity and pro
 - [ ] a test proves the function never reads invoice or invoice_line (query-log assertion)
 - [ ] price precedence is deterministic across shuffled rule insertion order
 
+## Verification
+
+**Gate G3 — stop here.** Before starting the next ticket, run
+
+```bash
+make verify
+```
+
+and paste `artifacts/verify-report.md` back. Work does not continue until this
+gate is signed off. See [../verification-protocol.md](../verification-protocol.md).
+
+---
+
+**Checked individually**, not only at the next gate, because:
+
+- This must never read invoice tables, or it will agree with the error it exists to catch.
+
+Run `make verify` and share `artifacts/verify-report.md` as soon as this ticket
+is complete.
+
 ## Definition of done
 
 - [ ] every deliverable file exists

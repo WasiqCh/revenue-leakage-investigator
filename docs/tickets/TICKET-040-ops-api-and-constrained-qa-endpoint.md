@@ -31,6 +31,17 @@ Q&A is scoped to one case's evidence pack, returns citations that resolve to evi
 - [ ] Q&A cannot access another case's evidence (scoping test)
 - [ ] triggering a reconcile twice is idempotent
 
+## Verification
+
+**Gate G8 — stop here.** Before starting the next ticket, run
+
+```bash
+make verify
+```
+
+and paste `artifacts/verify-report.md` back. Work does not continue until this
+gate is signed off. See [../verification-protocol.md](../verification-protocol.md).
+
 ## Definition of done
 
 - [ ] every deliverable file exists

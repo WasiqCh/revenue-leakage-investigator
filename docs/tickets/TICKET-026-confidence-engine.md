@@ -31,6 +31,15 @@ Eight weighted factors plus five gates. See docs/confidence.md for the exact wei
 - [ ] a clean deterministic case floors at 85
 - [ ] band boundaries at 75 and 90 behave exactly as specified
 
+## Verification
+
+**Checked individually**, not only at the next gate, because:
+
+- Trust must be measured, not asserted by the model.
+
+Run `make verify` and share `artifacts/verify-report.md` as soon as this ticket
+is complete.
+
 ## Definition of done
 
 - [ ] every deliverable file exists

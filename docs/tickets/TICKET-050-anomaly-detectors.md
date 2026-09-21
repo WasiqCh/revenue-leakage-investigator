@@ -52,6 +52,17 @@ statistics are more accurate and, critically, explainable to a Finance user.
 - [ ] thresholds are read from configuration, not hardcoded
 - [ ] zero alerts on 100 clean generated customers
 
+## Verification
+
+**Gate G10 — stop here.** Before starting the next ticket, run
+
+```bash
+make verify
+```
+
+and paste `artifacts/verify-report.md` back. Work does not continue until this
+gate is signed off. See [../verification-protocol.md](../verification-protocol.md).
+
 ## Definition of done
 
 - [ ] every deliverable file exists

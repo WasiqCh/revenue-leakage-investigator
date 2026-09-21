@@ -28,6 +28,17 @@ Scope matching across customer / subscription / subscription_line / product / gl
 - [ ] an expired exception (effective_to before period_start) does not match
 - [ ] a global-scope exception matches all customers
 
+## Verification
+
+**Gate G5 — stop here.** Before starting the next ticket, run
+
+```bash
+make verify
+```
+
+and paste `artifacts/verify-report.md` back. Work does not continue until this
+gate is signed off. See [../verification-protocol.md](../verification-protocol.md).
+
 ## Definition of done
 
 - [ ] every deliverable file exists

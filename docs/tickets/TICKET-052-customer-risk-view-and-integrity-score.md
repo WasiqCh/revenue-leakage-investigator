@@ -54,6 +54,17 @@ contributes nothing to it.
 - [ ] the score is computed without any LLM call
 - [ ] open and historical cases are listed for the customer
 
+## Verification
+
+**Gate G11 — stop here.** Before starting the next ticket, run
+
+```bash
+make verify
+```
+
+and paste `artifacts/verify-report.md` back. Work does not continue until this
+gate is signed off. See [../verification-protocol.md](../verification-protocol.md).
+
 ## Definition of done
 
 - [ ] every deliverable file exists

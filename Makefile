@@ -6,7 +6,7 @@
 # ---------------------------------------------------------------------------
 
 .DEFAULT_GOAL := help
-.PHONY: help up down logs db-shell migrate seed reconcile investigate test eval lint fmt fetch-cuad demo lint-backend lint-frontend fmt-backend fmt-frontend
+.PHONY: help up down logs db-shell migrate seed reconcile investigate test eval lint fmt fetch-cuad demo lint-backend lint-frontend fmt-backend fmt-frontend verify routes
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}'
@@ -62,6 +62,46 @@ fmt-backend: ## Auto-format Python
 
 fmt-frontend: ## Auto-format TypeScript
 	docker compose exec frontend npm run format
+
+routes: ## Frontend smoke test - proves pages render without a browser
+	bash scripts/smoke_routes.sh
+
+verify: ## Run every check and write artifacts/verify-report.md (paste this at gates)
+	@mkdir -p artifacts
+	@R=artifacts/verify-report.md; \
+	echo "# Verify report" > $$R; \
+	echo "" >> $$R; \
+	echo "generated: `date -u +%Y-%m-%dT%H:%M:%SZ`" >> $$R; \
+	echo "commit:    `git rev-parse --short HEAD`" >> $$R; \
+	echo "" >> $$R; \
+	echo "## services" >> $$R; echo '```' >> $$R; \
+	docker compose ps >> $$R 2>&1; echo '```' >> $$R; \
+	echo "" >> $$R; \
+	echo "## migrations (up / down / up)" >> $$R; echo '```' >> $$R; \
+	docker compose exec -T backend alembic upgrade head >> $$R 2>&1; \
+	docker compose exec -T backend alembic downgrade base >> $$R 2>&1; \
+	docker compose exec -T backend alembic upgrade head >> $$R 2>&1; \
+	echo "ok" >> $$R; echo '```' >> $$R; \
+	echo "" >> $$R; \
+	echo "## tests collected" >> $$R; echo '```' >> $$R; \
+	docker compose exec -T backend pytest --collect-only -q 2>&1 | tail -3 >> $$R; \
+	echo '```' >> $$R; \
+	echo "" >> $$R; \
+	echo "## tests" >> $$R; echo '```' >> $$R; \
+	docker compose exec -T backend pytest -q 2>&1 | tail -25 >> $$R; \
+	echo '```' >> $$R; \
+	echo "" >> $$R; \
+	echo "## frontend build and typecheck" >> $$R; echo '```' >> $$R; \
+	docker compose exec -T frontend npx tsc --noEmit >> $$R 2>&1 || echo "TYPECHECK FAILED" >> $$R; \
+	docker compose exec -T frontend npm run build >> $$R 2>&1 || echo "BUILD FAILED" >> $$R; \
+	echo '```' >> $$R; \
+	echo "" >> $$R; \
+	echo "## route smoke" >> $$R; echo '```' >> $$R; \
+	bash scripts/smoke_routes.sh >> $$R 2>&1 || echo "ROUTE SMOKE FAILED" >> $$R; \
+	echo '```' >> $$R; \
+	echo "" >> $$R; \
+	cat artifacts/route-smoke.txt >> $$R 2>/dev/null || true
+	@echo "wrote artifacts/verify-report.md - paste this file at the gate"
 
 demo: ## Seed + reconcile + investigate, ready for a demo video
 	$(MAKE) seed

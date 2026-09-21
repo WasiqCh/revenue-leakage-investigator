@@ -32,6 +32,15 @@ DecimalMoney with add / multiply / quantize using ROUND_HALF_UP and per-currency
 - [ ] a test asserts Decimal never degrades to float
 - [ ] FX walk-back returns the nearest prior business day and raises when none exists
 
+## Verification
+
+**Checked individually**, not only at the next gate, because:
+
+- Everything downstream depends on exact money arithmetic.
+
+Run `make verify` and share `artifacts/verify-report.md` as soon as this ticket
+is complete.
+
 ## Definition of done
 
 - [ ] every deliverable file exists

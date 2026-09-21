@@ -98,6 +98,27 @@ than adding a dependency.
 5. Update the ticket file: mark criteria `[x]` and set `Status: DONE`.
 6. Commit with a message referencing the ticket.
 
+### Before you push
+
+Run the evidence bundle and clear your own findings first:
+
+```bash
+make verify
+```
+
+It writes `artifacts/verify-report.md`. Nothing may be pushed while that report
+contains a failure. Fix your own problems before someone else has to find them.
+
+Two things this catches that self-review usually misses:
+
+- **Tests that never ran.** Check the collected count in the report. A green run
+  with zero tests collected is a failure, not a pass.
+- **Pages that build but render empty.** `make routes` proves each page returns
+  200 *and* contains the label that should be on it.
+
+Full rules, severities and the gate schedule:
+[`docs/verification-protocol.md`](docs/verification-protocol.md).
+
 ### Commit format
 
 ```

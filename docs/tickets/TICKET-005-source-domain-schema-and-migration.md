@@ -30,6 +30,17 @@ Tables: customer, customer_alias, product, product_alias, pricing_rule, fx_rate,
 - [ ] every table has id, created_at, updated_at
 - [ ] a metadata test enumerates the expected table set exactly
 
+## Verification
+
+**Gate G1 — stop here.** Before starting the next ticket, run
+
+```bash
+make verify
+```
+
+and paste `artifacts/verify-report.md` back. Work does not continue until this
+gate is signed off. See [../verification-protocol.md](../verification-protocol.md).
+
 ## Definition of done
 
 - [ ] every deliverable file exists
