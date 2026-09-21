@@ -2,6 +2,9 @@
 # Plain-English: this file starts the whole app with one command (`make up`).
 # It starts four things: the database, the API server, a background worker,
 # and the website. Docker is REQUIRED - there is no non-Docker path.
+#
+# Healthchecks: neither the Python nor the Node image ships curl, so the
+# backend probe uses urllib and the website probe uses Node's built-in fetch.
 # ---------------------------------------------------------------------------
 
 services:
@@ -23,6 +26,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
+    restart: unless-stopped
 
   backend:
     build:
@@ -32,11 +36,17 @@ services:
     command: uvicorn app.api.main:app --host 0.0.0.0 --port 8000 --reload
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-rl_app}:${POSTGRES_PASSWORD:-change_me}@db:5432/${POSTGRES_DB:-revenue_leakage}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-revenue_leakage}
+      POSTGRES_USER: ${POSTGRES_USER:-rl_app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me}
       LLM_BASE_URL: ${LLM_BASE_URL}
       LLM_API_KEY: ${LLM_API_KEY}
       LLM_MODEL: ${LLM_MODEL}
       LLM_MOCK: ${LLM_MOCK:-0}
       EMBEDDING_MODEL: ${EMBEDDING_MODEL}
+      EMBEDDING_DIMENSIONS: ${EMBEDDING_DIMENSIONS:-1536}
       CUAD_OFFLINE: ${CUAD_OFFLINE:-1}
     ports:
       - "8000:8000"
@@ -44,9 +54,23 @@ services:
       - ./backend:/app
       - ./fixtures:/fixtures:ro
       - ./data:/data
+    healthcheck:
+      # Plain-English: the API counts as up only once /healthz answers.
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz').read()",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
     depends_on:
       db:
         condition: service_healthy
+    restart: unless-stopped
 
   worker:
     build:
@@ -58,19 +82,40 @@ services:
     command: python -m app.jobs.worker
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-rl_app}:${POSTGRES_PASSWORD:-change_me}@db:5432/${POSTGRES_DB:-revenue_leakage}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-revenue_leakage}
+      POSTGRES_USER: ${POSTGRES_USER:-rl_app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me}
       LLM_BASE_URL: ${LLM_BASE_URL}
       LLM_API_KEY: ${LLM_API_KEY}
       LLM_MODEL: ${LLM_MODEL}
       LLM_MOCK: ${LLM_MOCK:-0}
       EMBEDDING_MODEL: ${EMBEDDING_MODEL}
+      EMBEDDING_DIMENSIONS: ${EMBEDDING_DIMENSIONS:-1536}
       CUAD_OFFLINE: ${CUAD_OFFLINE:-1}
     volumes:
       - ./backend:/app
       - ./fixtures:/fixtures:ro
       - ./data:/data
+    healthcheck:
+      # Plain-English: a worker with no database connection cannot do anything,
+      # so that is what healthy means here.
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import os, psycopg; psycopg.connect(os.environ['DATABASE_URL'].replace('postgresql+psycopg://', 'postgresql://')).execute('select 1')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
     depends_on:
       db:
         condition: service_healthy
+    restart: unless-stopped
 
   frontend:
     build:
@@ -85,8 +130,24 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    healthcheck:
+      # Plain-English: the first compile of a Next.js dev server is slow, hence
+      # the long start period.
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:3000').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
 
 volumes:
   postgres_data:

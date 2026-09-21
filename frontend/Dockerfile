@@ -1,12 +1,15 @@
-# Minimal scaffold. TICKET-001 owns the final version of this file.
+# TICKET-002 owns this file.
 FROM node:22-slim
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
 WORKDIR /app
 
-COPY package.json ./
-RUN npm install
+# Plain-English: install dependencies from the lockfile so every developer and
+# CI gets the same tree. package.json is copied first so Docker can reuse the
+# layer when only source files change.
+COPY package.json package-lock.json ./
+RUN npm ci
 
 COPY . .
 
