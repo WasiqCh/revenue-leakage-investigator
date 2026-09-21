@@ -29,6 +29,17 @@ Same seed always produces identical output. Subscription lines use slowly-changi
 - [ ] subscription dates always fall inside contract dates
 - [ ] a test asserts generated names match the synthetic pattern (no real companies)
 
+## Verification
+
+**Gate G2 — stop here.** Before starting the next ticket, run
+
+```bash
+make verify
+```
+
+and paste `artifacts/verify-report.md` back. Work does not continue until this
+gate is signed off. See [../verification-protocol.md](../verification-protocol.md).
+
 ## Definition of done
 
 - [ ] every deliverable file exists

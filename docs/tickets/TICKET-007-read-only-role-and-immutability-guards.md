@@ -30,6 +30,15 @@ Role `rl_readonly` gets SELECT only on source tables. BEFORE UPDATE OR DELETE tr
 - [ ] the application role can still insert normally
 - [ ] no code path grants write access to the agent role
 
+## Verification
+
+**Checked individually**, not only at the next gate, because:
+
+- Guardrail: the agent must be physically unable to write to source tables.
+
+Run `make verify` and share `artifacts/verify-report.md` as soon as this ticket
+is complete.
+
 ## Definition of done
 
 - [ ] every deliverable file exists

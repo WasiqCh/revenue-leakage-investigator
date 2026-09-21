@@ -30,6 +30,26 @@ Re-fetches every cited evidence source, validates every numeric claim, emits a v
 - [ ] a fully grounded report passes
 - [ ] the verifier is deterministic given the same database state
 
+## Verification
+
+**Gate G6 — stop here.** Before starting the next ticket, run
+
+```bash
+make verify
+```
+
+and paste `artifacts/verify-report.md` back. Work does not continue until this
+gate is signed off. See [../verification-protocol.md](../verification-protocol.md).
+
+---
+
+**Checked individually**, not only at the next gate, because:
+
+- This is what stops invented numbers reaching Finance.
+
+Run `make verify` and share `artifacts/verify-report.md` as soon as this ticket
+is complete.
+
 ## Definition of done
 
 - [ ] every deliverable file exists

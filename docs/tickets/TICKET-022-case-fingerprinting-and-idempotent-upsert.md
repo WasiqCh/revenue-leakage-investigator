@@ -28,6 +28,15 @@ case_key is a deterministic hash over (customer, subscription_line, leak_type, p
 - [ ] re-running detection leaves the case count unchanged
 - [ ] two different leak types on the same line yield two cases
 
+## Verification
+
+**Checked individually**, not only at the next gate, because:
+
+- Without this the case queue fills with duplicates and Finance stops reading it.
+
+Run `make verify` and share `artifacts/verify-report.md` as soon as this ticket
+is complete.
+
 ## Definition of done
 
 - [ ] every deliverable file exists
