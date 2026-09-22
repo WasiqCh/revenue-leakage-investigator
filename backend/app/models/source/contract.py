@@ -13,6 +13,18 @@ search and fuse the results. The indexes on those two columns are created in
 TICKET-006, which owns the proof that they are used.
 """
 
+# ---------------------------------------------------------------------------
+# The two retrieval indexes. See TICKET-006 and docs/retrieval.md.
+#
+# HNSW rather than IVFFlat: it can be built on an empty table, needs no
+# pre-training step, and stays accurate as rows are inserted -- which matters
+# because clauses are embedded incrementally by a job, not loaded in one batch.
+# ``vector_cosine_ops`` matches the distance function retrieval uses, so the
+# index is actually eligible for the query EXPLAIN has to prove.
+#
+# 1536 dimensions is comfortably under pgvector's 2000-dimension index limit.
+# ---------------------------------------------------------------------------
+
 from __future__ import annotations
 
 from datetime import date
@@ -140,6 +152,16 @@ Index("ix_contract_customer_ref", Contract.customer_ref)
 Index("ix_contract_contract_number", Contract.contract_number)
 Index("ix_contract_clause_contract_ref", ContractClause.contract_ref)
 Index("ix_contract_clause_clause_type", ContractClause.clause_type)
+# Semantic search: nearest neighbour over clause embeddings.
+Index(
+    "ix_contract_clause_embedding",
+    ContractClause.embedding,
+    postgresql_using="hnsw",
+    postgresql_with={"m": "16", "ef_construction": "64"},
+    postgresql_ops={"embedding": "vector_cosine_ops"},
+)
+# Lexical search: full-text match over the same clause text.
+Index("ix_contract_clause_tsv", ContractClause.tsv, postgresql_using="gin")
 Index("ix_contract_term_contract_ref", ContractTerm.contract_ref)
 Index("ix_contract_term_term_type", ContractTerm.term_type)
 Index("ix_amendment_contract_ref", Amendment.contract_ref)

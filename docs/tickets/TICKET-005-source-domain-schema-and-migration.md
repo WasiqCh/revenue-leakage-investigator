@@ -34,9 +34,10 @@ Tables: customer, customer_alias, product, product_alias, pricing_rule, fx_rate,
 - [x] every table has id, created_at, updated_at
       (`test_every_table_has_id_created_at_and_updated_at`, asserted off
       `information_schema`, not off the models)
-- [x] a metadata test enumerates the expected table set exactly
-      (`test_metadata_and_database_hold_exactly_the_expected_tables` — asserts
-      both `Base.metadata` and the live database equal the 19-table set)
+- [x] a metadata test enumerates the expected source-table subset
+      (`test_metadata_and_database_hold_all_expected_source_tables` — asserts
+      both `Base.metadata` and the live database contain the 19 source tables;
+      TICKET-006 owns the exact full-schema assertion after later tables exist)
 
 ## Verification
 
@@ -138,3 +139,9 @@ was built in, so each check the target runs was run by hand through
     in an earlier branch would keep every later ticket red. Also fixed a
     duplicated "Deliverables" block I had accidentally left in TICKET-004, which
     was making the verifier look for `alembic.ini` at the repo root.
+
+11. **The source-schema metadata test now asserts its 19-table subset, not the
+    entire application schema.** TICKET-006 correctly registers 21 additional
+    derived/case/ops tables. Keeping TICKET-005's test exact would make a later,
+    valid schema expansion look like a regression. TICKET-006 adds the one
+    exact full-schema test instead.

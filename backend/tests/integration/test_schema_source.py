@@ -2,8 +2,9 @@
 
 Plain-English: these tests read the live database rather than the Python classes,
 because a model that exists in code but not in Postgres is exactly the mistake
-that bites three tickets later. The table set is therefore asserted **exactly** --
-a missing table fails, and so does a stray one.
+that bites three tickets later. TICKET-005 owns the source-table subset; later
+tickets add derived, case and ops tables, so this file asserts that source subset
+rather than rejecting legitimate tables added by later schema tickets.
 """
 
 from __future__ import annotations
@@ -23,8 +24,8 @@ from app.db.engine import to_psycopg_dsn
 from app.models import source  # noqa: F401  -- registers every table on the metadata
 from app.models.source.contract import EMBEDDING_DIMENSIONS
 
-# The 19 tables TICKET-005 names. Kept as a literal on purpose: if someone adds a
-# table without adding a migration, this test is what notices.
+# The 19 source tables TICKET-005 names. Kept as a literal on purpose: if a
+# source model is added without a migration, this test is what notices.
 EXPECTED_TABLES = {
     "amendment",
     "amendment_term",
@@ -66,9 +67,14 @@ def engine():
     engine.dispose()
 
 
-def test_metadata_and_database_hold_exactly_the_expected_tables(engine) -> None:
-    """Both sides must agree, and neither may hold anything extra."""
-    assert set(Base.metadata.tables) == EXPECTED_TABLES
+def test_metadata_and_database_hold_all_expected_source_tables(engine) -> None:
+    """Both sides must contain TICKET-005's source subset.
+
+    TICKET-006 intentionally registers more tables, and its own test owns the
+    full exact-set assertion. Keeping this test to its ticket's boundary lets the
+    source-schema contract remain useful after the model grows.
+    """
+    assert EXPECTED_TABLES <= set(Base.metadata.tables)
 
     with engine.connect() as connection:
         rows = connection.execute(
@@ -79,7 +85,7 @@ def test_metadata_and_database_hold_exactly_the_expected_tables(engine) -> None:
             )
         ).fetchall()
 
-    assert {row[0] for row in rows} == EXPECTED_TABLES
+    assert EXPECTED_TABLES <= {row[0] for row in rows}
 
 
 def test_every_table_has_id_created_at_and_updated_at(engine) -> None:
