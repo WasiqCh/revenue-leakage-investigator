@@ -5,12 +5,13 @@ lighter engine to fall back on. They skip when DATABASE_URL is absent, so the
 suite still runs in environments with no database.
 """
 
-import os
 from collections.abc import Iterator
 from urllib.parse import urlsplit, urlunsplit
 
 import psycopg
 import pytest
+
+from app.config import settings_or_none
 
 REQUIRED_EXTENSIONS = ("vector", "pg_trgm", "pgcrypto")
 
@@ -21,10 +22,10 @@ READ_ONLY_PASSWORD = "rl_readonly_pw"
 
 def _dsn() -> str:
     """The app DSN, rewritten from SQLAlchemy form to something psycopg takes."""
-    dsn = os.environ.get("DATABASE_URL")
-    if not dsn:
-        pytest.skip("DATABASE_URL is not set, so there is no database to check")
-    return dsn.replace("postgresql+psycopg://", "postgresql://")
+    settings = settings_or_none()
+    if settings is None:
+        pytest.skip("no database is configured, so there is no database to check")
+    return settings.database_url_psycopg
 
 
 def _as_role(dsn: str, username: str, password: str) -> str:

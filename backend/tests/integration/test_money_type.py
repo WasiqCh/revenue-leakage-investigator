@@ -7,20 +7,19 @@ docker-compose; it skips when no database is reachable.
 
 from __future__ import annotations
 
-import os
 from decimal import Decimal
 
 import psycopg
 import pytest
 
-DRIVER_PREFIX = "postgresql+psycopg://"
+from app.config import settings_or_none
 
 
 def _dsn() -> str:
-    dsn = os.environ.get("DATABASE_URL")
-    if not dsn:
-        pytest.skip("DATABASE_URL is not set, so there is no database to test against")
-    return dsn.replace(DRIVER_PREFIX, "postgresql://")
+    settings = settings_or_none()
+    if settings is None:
+        pytest.skip("no database is configured, so there is no database to test against")
+    return settings.database_url_psycopg
 
 
 @pytest.fixture

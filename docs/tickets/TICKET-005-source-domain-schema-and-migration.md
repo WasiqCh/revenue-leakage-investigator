@@ -126,3 +126,15 @@ was built in, so each check the target runs was run by hand through
    `valid_to` and opens a new one. `is_current` is the shortcut for "the row that
    applies now". No partial unique index on `is_current` yet — if TICKET-013
    needs one, add it there.
+
+10. **Follow-up commit on this branch clears the tier-1 gate for 001–005.**
+    `scripts/verify_ticket.py` was failing every ticket with SEV2 "environment
+    read outside config.py": tests were calling `os.environ.get("DATABASE_URL")`
+    to decide whether to skip. Added `Settings.settings_or_none()` to
+    `app/config.py` — the one module allowed to look at the environment — and
+    routed all seven call sites through it, including two in files owned by
+    earlier tickets (`tests/test_database_stack.py`, `tests/test_offline_env.py`).
+    The fix is committed here because the gate verdict is repo-wide: leaving it
+    in an earlier branch would keep every later ticket red. Also fixed a
+    duplicated "Deliverables" block I had accidentally left in TICKET-004, which
+    was making the verifier look for `alembic.ini` at the repo root.

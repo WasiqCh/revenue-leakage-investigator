@@ -9,12 +9,13 @@ added without a migration.
 
 from __future__ import annotations
 
-import os
 import subprocess
 import sys
 from pathlib import Path
 
 import pytest
+
+from app.config import settings_or_none
 
 # backend/tests/integration/test_alembic.py -> backend/
 BACKEND_ROOT = Path(__file__).resolve().parents[2]
@@ -32,8 +33,8 @@ def _alembic(*args: str) -> subprocess.CompletedProcess[str]:
 
 @pytest.fixture(scope="module", autouse=True)
 def _require_database() -> None:
-    if not os.environ.get("DATABASE_URL"):
-        pytest.skip("DATABASE_URL is not set, so there is no database to migrate")
+    if settings_or_none() is None:
+        pytest.skip("no database is configured, so there is no database to migrate")
 
 
 def test_alembic_upgrade_head_succeeds() -> None:

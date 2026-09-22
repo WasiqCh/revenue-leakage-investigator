@@ -23,7 +23,7 @@ from decimal import Decimal
 from functools import lru_cache
 from typing import Final
 
-from pydantic import Field, model_validator
+from pydantic import Field, ValidationError, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # The published confidence weights live in docs/confidence.md. They are copied
@@ -278,3 +278,18 @@ class Settings(BaseSettings):
 def get_settings() -> Settings:
     """Return the process-wide settings object (built once)."""
     return Settings()  # type: ignore[call-arg]
+
+
+def settings_or_none() -> Settings | None:
+    """Return the settings, or None when the environment is not configured.
+
+    Plain-English: this module is the only place allowed to look at environment
+    variables, and the tier-1 verifier enforces that on every file in the repo.
+    Tests that need to know "is there actually a database to talk to" ask this
+    function instead of reading ``os.environ`` themselves -- otherwise they skip
+    quietly on a developer machine and the gate goes red.
+    """
+    try:
+        return get_settings()
+    except (ValidationError, ValueError):
+        return None

@@ -24,18 +24,13 @@ Custom types: MoneyType (Decimal), CurrencyCode, HalfOpenDateInterval helpers. A
 - `backend/app/db/base.py`
 - `backend/app/db/types.py`
 - `backend/app/db/enums.py`
-- `alembic.ini`
-- `alembic/env.py`
+- `backend/alembic.ini`
+- `backend/alembic/env.py`
 
-## Deliverables
-
-- [x] `backend/app/db/engine.py`
-- [x] `backend/app/db/session.py`
-- [x] `backend/app/db/base.py`
-- [x] `backend/app/db/types.py`
-- [x] `backend/app/db/enums.py`
-- [x] `alembic.ini` (at `backend/alembic.ini`, next to `env.py`)
-- [x] `alembic/env.py` (at `backend/alembic/env.py`)
+All seven exist. `alembic.ini` and `alembic/env.py` are under `backend/` rather
+than at the repo root: the Alembic script has to sit beside the `app/` package
+it imports, and only `backend/` is mounted into the container. See deviation 1
+below.
 
 ## Acceptance criteria
 

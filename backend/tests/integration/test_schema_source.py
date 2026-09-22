@@ -8,7 +8,6 @@ a missing table fails, and so does a stray one.
 
 from __future__ import annotations
 
-import os
 import subprocess
 import sys
 from decimal import Decimal
@@ -18,7 +17,7 @@ import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import IntegrityError
 
-from app.config import get_settings
+from app.config import get_settings, settings_or_none
 from app.db.base import Base
 from app.db.engine import to_psycopg_dsn
 from app.models import source  # noqa: F401  -- registers every table on the metadata
@@ -60,8 +59,8 @@ def _sync_engine():
 
 @pytest.fixture(scope="module")
 def engine():
-    if not os.environ.get("DATABASE_URL"):
-        pytest.skip("DATABASE_URL is not set, so there is no database to inspect")
+    if settings_or_none() is None:
+        pytest.skip("no database is configured, so there is no database to inspect")
     engine = _sync_engine()
     yield engine
     engine.dispose()
@@ -169,8 +168,8 @@ def test_migration_up_down_up_succeeds() -> None:
     This runs last, and leaves the database migrated, because it drops and then
     rebuilds every table.
     """
-    if not os.environ.get("DATABASE_URL"):
-        pytest.skip("DATABASE_URL is not set, so there is no database to migrate")
+    if settings_or_none() is None:
+        pytest.skip("no database is configured, so there is no database to migrate")
 
     for args in (("upgrade", "head"), ("downgrade", "base"), ("upgrade", "head")):
         result = subprocess.run(
