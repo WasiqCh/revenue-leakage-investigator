@@ -13,7 +13,9 @@ from importlib import import_module
 from logging.config import fileConfig
 from typing import Any
 
+from pgvector.sqlalchemy import Vector
 from sqlalchemy import engine_from_config, pool
+from sqlalchemy.dialects.postgresql import TSVECTOR
 
 from alembic import context
 from app.config import get_settings
@@ -67,6 +69,14 @@ def render_item(type_: str, obj: object, autogen_context: Any) -> str | bool:
     if isinstance(obj, HalfOpenDateInterval):
         autogen_context.imports.add("from sqlalchemy.dialects import postgresql")
         return "postgresql.DATERANGE()"
+    # Same reason for pgvector: without this the migration says
+    # `pgvector.sqlalchemy.vector.VECTOR(dim=1536)` with no import and dies.
+    if isinstance(obj, Vector):
+        autogen_context.imports.add("from pgvector.sqlalchemy import Vector")
+        return f"Vector(dim={obj.dim})"
+    if isinstance(obj, TSVECTOR):
+        autogen_context.imports.add("from sqlalchemy.dialects import postgresql")
+        return "postgresql.TSVECTOR()"
     return False
 
 
